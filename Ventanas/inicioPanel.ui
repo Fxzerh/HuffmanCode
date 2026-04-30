@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Inicio</class>
+ <widget class="QWidget" name="Inicio">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="menuLabel">
+     <property name="maximumSize">
+      <size>
+       <width>400</width>
+       <height>65</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>40</pointsize>
+       <bold>true</bold>
+       <hintingpreference>PreferNoHinting</hintingpreference>
+      </font>
+     </property>
+     <property name="text">
+      <string>Menu</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="encodeFile_btn">
+     <property name="maximumSize">
+      <size>
+       <width>1100</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Proteger Archivo</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="decodeFixFile_btn">
+     <property name="maximumSize">
+      <size>
+       <width>1100</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Desproteger y Corregir Archivo</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="decodeFile_btn">
+     <property name="maximumSize">
+      <size>
+       <width>1100</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Solo Desproteger Archivo</string>
+     </property>
+     <property name="autoDefault">
+      <bool>true</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="addError_btn">
+     <property name="maximumSize">
+      <size>
+       <width>1100</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Insertar Error</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="loadFile_btn">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1000</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Cargar Archivo</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
