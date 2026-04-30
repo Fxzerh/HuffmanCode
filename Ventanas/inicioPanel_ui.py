@@ -37,34 +37,34 @@ class Ui_Inicio(object):
 
         self.gridLayout.addWidget(self.menuLabel, 0, 0, 1, 1)
 
-        self.encodeFile_btn = QPushButton(Inicio)
-        self.encodeFile_btn.setObjectName(u"encodeFile_btn")
-        self.encodeFile_btn.setMaximumSize(QSize(1100, 70))
-        self.encodeFile_btn.setFlat(True)
+        self.compactFile_btn = QPushButton(Inicio)
+        self.compactFile_btn.setObjectName(u"compactFile_btn")
+        self.compactFile_btn.setMaximumSize(QSize(1100, 70))
+        self.compactFile_btn.setFlat(True)
 
-        self.gridLayout.addWidget(self.encodeFile_btn, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.compactFile_btn, 2, 0, 1, 1)
 
-        self.decodeFixFile_btn = QPushButton(Inicio)
-        self.decodeFixFile_btn.setObjectName(u"decodeFixFile_btn")
-        self.decodeFixFile_btn.setMaximumSize(QSize(1100, 70))
-        self.decodeFixFile_btn.setFlat(True)
+        self.showFiles_btn = QPushButton(Inicio)
+        self.showFiles_btn.setObjectName(u"showFiles_btn")
+        self.showFiles_btn.setMaximumSize(QSize(1100, 70))
+        self.showFiles_btn.setFlat(True)
 
-        self.gridLayout.addWidget(self.decodeFixFile_btn, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.showFiles_btn, 4, 0, 1, 1)
 
-        self.decodeFile_btn = QPushButton(Inicio)
-        self.decodeFile_btn.setObjectName(u"decodeFile_btn")
-        self.decodeFile_btn.setMaximumSize(QSize(1100, 70))
-        self.decodeFile_btn.setAutoDefault(True)
-        self.decodeFile_btn.setFlat(True)
+        self.estadisticas_btn = QPushButton(Inicio)
+        self.estadisticas_btn.setObjectName(u"estadisticas_btn")
+        self.estadisticas_btn.setMaximumSize(QSize(1100, 70))
+        self.estadisticas_btn.setAutoDefault(True)
+        self.estadisticas_btn.setFlat(True)
 
-        self.gridLayout.addWidget(self.decodeFile_btn, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.estadisticas_btn, 5, 0, 1, 1)
 
-        self.addError_btn = QPushButton(Inicio)
-        self.addError_btn.setObjectName(u"addError_btn")
-        self.addError_btn.setMaximumSize(QSize(1100, 70))
-        self.addError_btn.setFlat(True)
+        self.decompactFile_btn = QPushButton(Inicio)
+        self.decompactFile_btn.setObjectName(u"decompactFile_btn")
+        self.decompactFile_btn.setMaximumSize(QSize(1100, 70))
+        self.decompactFile_btn.setFlat(True)
 
-        self.gridLayout.addWidget(self.addError_btn, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.decompactFile_btn, 3, 0, 1, 1)
 
         self.loadFile_btn = QPushButton(Inicio)
         self.loadFile_btn.setObjectName(u"loadFile_btn")
@@ -85,8 +85,8 @@ class Ui_Inicio(object):
 
         self.retranslateUi(Inicio)
 
-        self.encodeFile_btn.setDefault(False)
-        self.addError_btn.setDefault(False)
+        self.compactFile_btn.setDefault(False)
+        self.decompactFile_btn.setDefault(False)
         self.loadFile_btn.setDefault(False)
 
 
@@ -96,10 +96,10 @@ class Ui_Inicio(object):
     def retranslateUi(self, Inicio):
         Inicio.setWindowTitle(QCoreApplication.translate("Inicio", u"Form", None))
         self.menuLabel.setText(QCoreApplication.translate("Inicio", u"Menu", None))
-        self.encodeFile_btn.setText(QCoreApplication.translate("Inicio", u"Proteger Archivo", None))
-        self.decodeFixFile_btn.setText(QCoreApplication.translate("Inicio", u"Desproteger y Corregir Archivo", None))
-        self.decodeFile_btn.setText(QCoreApplication.translate("Inicio", u"Solo Desproteger Archivo", None))
-        self.addError_btn.setText(QCoreApplication.translate("Inicio", u"Insertar Error", None))
+        self.compactFile_btn.setText(QCoreApplication.translate("Inicio", u"Compactar Archivo", None))
+        self.showFiles_btn.setText(QCoreApplication.translate("Inicio", u"Comparar Archivos", None))
+        self.estadisticas_btn.setText(QCoreApplication.translate("Inicio", u"Ver Estadisticas", None))
+        self.decompactFile_btn.setText(QCoreApplication.translate("Inicio", u"Descompactar Archivo", None))
         self.loadFile_btn.setText(QCoreApplication.translate("Inicio", u"Cargar Archivo", None))
     # retranslateUi
 
