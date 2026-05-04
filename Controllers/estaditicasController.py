@@ -15,4 +15,3 @@ class EstadisticasController(QWidget):
 
     def cambiarPanel (self, indice):
         self.mainWindow.cambiar_pantalla(indice)
-        self.showFile.clear()
