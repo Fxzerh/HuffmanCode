@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QFileDialog, QMessageBox, QTableWidgetItem, QTableWidget
+from PyQt6.QtWidgets import QWidget, QMessageBox, QTableWidgetItem, QTableWidget
 from Clases.nodo import Nodo 
 from PyQt6 import uic
 import json
@@ -16,7 +16,7 @@ class CompactFileController(QWidget):
 
         self.fileSelect = None              # Variable para guardar el nombre del archivo que se selecciona de la tabla
         self.raiz = None                    # Variable para guardar la raiz del arbol de huffman
-        self.dicCaracteres = {}
+        self.dicCaracteres = {}             # Variable para guardar el diccionario de caracteres y sus frecuencias
         self.tablaCodigos = {}              # Variable para guardar los codigos de huffman
 
         # ---------- SETEOS INICIALES ---------------------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ class CompactFileController(QWidget):
         rutaFile = os.path.join(self.carpetaArchivos, nombreArchivo)
         try:
             if os.path.exists(rutaFile):
-                with open(rutaFile, 'r') as f:
+                with open(rutaFile, 'r', encoding='utf-8') as f:
                     contenido = f.read()
                     self.textFile.setPlainText(contenido)
             else:
@@ -99,7 +99,7 @@ class CompactFileController(QWidget):
         rutaFile = os.path.join(self.carpetaArchivos, nombreArchivo)
         try:
             if os.path.exists(rutaFile):
-                with open(rutaFile, "r") as f:
+                with open(rutaFile, "r", encoding='utf-8') as f:
                     contenido = f.read()
                 # CREAMOS EL ARBOL DE HUFFMAN
                 self.arbolHuffman(contenido)
