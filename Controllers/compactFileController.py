@@ -154,13 +154,13 @@ class CompactFileController(QWidget):
             listNodos.append(nodo)
 
         while len(listNodos) > 1:           # Creamos nodos padres hasta llegar a la raiz y crear asi el arbol de Huffman
-            listNodos.sort()
+            listNodos.sort()                # Ordenamos la lista de nodos por frecuencia
             nodoI = listNodos.pop(0)
             nodoD = listNodos.pop(0)
-            padre = Nodo(simbolo=None, frecuencia=nodoI.frecuencia + nodoD.frecuencia)
+            padre = Nodo(simbolo=None, frecuencia=nodoI.frecuencia + nodoD.frecuencia)  # Creamos el nodo padre de los 2 nodos con menos frecuencia
             padre.hijoIzq = nodoI
             padre.hijoDer = nodoD
-            listNodos.append(padre)
+            listNodos.append(padre)         # Agregamos el padre a la lista de nodos para seguir creando el arbol
         self.raiz = listNodos[0]
     
     def generarCodigos(self, nodo, codigo=""):      # Creamos la tabla de codigos de Huffman recorriendo recursivamente el arbol

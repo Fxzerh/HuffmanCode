@@ -144,25 +144,25 @@ class DecompactFileController(QWidget):
             listNodos.append(nodo)
 
         while len(listNodos) > 1:           # Creamos nodos padres hasta llegar a la raiz y crear asi el arbol de Huffman
-            listNodos.sort()
+            listNodos.sort()                # Ordenamos la lista de nodos por frecuencia
             nodoI = listNodos.pop(0)
             nodoD = listNodos.pop(0)
-            padre = Nodo(simbolo=None, frecuencia=nodoI.frecuencia + nodoD.frecuencia)
+            padre = Nodo(simbolo=None, frecuencia=nodoI.frecuencia + nodoD.frecuencia)  # Creamos el nodo padre de los 2 nodos con menos frecuencia
             padre.hijoIzq = nodoI
             padre.hijoDer = nodoD
-            listNodos.append(padre)
+            listNodos.append(padre)         # Agregamos el padre a la lista de nodos para seguir creando el arbol
         self.raiz = listNodos[0]
     
     def descomprimirTexto(self, textoComprimido):
-        nodoActual = self.raiz
+        nodoActual = self.raiz                              # Agarramos la raiz para recorrer el arbol de huffman generado
         textoDescomprimido = ""
-        for c in textoComprimido:
+        for c in textoComprimido:                           # Por cada caracter del archivo comprimido recorremos el arbol
             if c == "0":
-                nodoActual = nodoActual.hijoIzq
+                nodoActual = nodoActual.hijoIzq             # Si el bit es 0 vamos al hijo izquierdo
             else:
-                nodoActual = nodoActual.hijoDer
+                nodoActual = nodoActual.hijoDer             # Si el bit es 1 vamos al hijo derecho
             
-            if nodoActual.simbolo != None:
-                textoDescomprimido += nodoActual.simbolo
-                nodoActual = self.raiz
+            if nodoActual.simbolo != None:                  # Si el simbolo del nodo es distinto a None, llegamos a una hoja por lo que es un simbolo del texto original
+                textoDescomprimido += nodoActual.simbolo    # Agregamos el simbolo al texto descomprimido
+                nodoActual = self.raiz                      # Volvemos a la raiz para seguir recorriendo el arbol con los siguientes bits del texto comprimido
         return textoDescomprimido
