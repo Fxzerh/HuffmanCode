@@ -18,6 +18,7 @@ class CompactFileController(QWidget):
         self.raiz = None                    # Variable para guardar la raiz del arbol de huffman
         self.dicCaracteres = {}             # Variable para guardar el diccionario de caracteres y sus frecuencias
         self.tablaCodigos = {}              # Variable para guardar los codigos de huffman
+        self.cantNodos = 0
 
         # ---------- SETEOS INICIALES ---------------------------------------------------------------------------------------------------------
         self.textFile.setReadOnly(True)  # Hacer el QTextEdit de solo lectura
@@ -113,7 +114,6 @@ class CompactFileController(QWidget):
                 for caracter in contenido:                      # Creamos un string con la traduccion del texto al codigo de huffman
                     codigo = self.tablaCodigos[caracter]
                     bitsComprimidos += codigo
-
                 while len(bitsComprimidos) % 8 != 0:            # Agregamos bits de padding (0s) para que el string sea multiplo de 8
                     bitsComprimidos += "0"
                     cantPadding += 1
@@ -123,7 +123,7 @@ class CompactFileController(QWidget):
                     byte = bitsComprimidos[i:i+8]
                     byteDecimal = int(byte, 2)                                      # Pasamos los 8 bits a decimal
                     bytesComprimidos += byteDecimal.to_bytes(1, byteorder='big')    # Pasamos los decimales a byte y los concatenamos
-
+                
                 # GUARDAMOS EL ARCHIVO COMPRIMIDO
                 dicBytes = json.dumps(self.dicCaracteres).encode()
                 nombreFile = os.path.splitext(nombreArchivo)[0]  # Obtener el nombre del archivo sin la extensión
@@ -134,7 +134,9 @@ class CompactFileController(QWidget):
                     f.write(len(dicBytes).to_bytes(4, byteorder='big'))     # Guardamos la cantidad de caractereres del diccionario en el header
                     f.write(dicBytes)                                       # Guardamos el diccionario de caracteres en el header
                     # Agregamos el contenido comprimido
-                    f.write(bytesComprimidos)                                   
+                    f.write(bytesComprimidos)  
+                self.dicCaracteres = {}     # Limpiamos el diccionario de caracteres para la proxima compresion
+                self.tablaCodigos = {}      # Limpiamos la tabla de codigos para la proxima compresion                                 
                 self.refrescarPanel()
                 QMessageBox.information(self, "Éxito", f"Archivo comprimido con Huffman correctamente. \nGuardado en '{nombreFile}.huf'.")               
 
@@ -152,7 +154,8 @@ class CompactFileController(QWidget):
         for par in self.dicCaracteres.items():      # Por cada par (caracter, frecuencia) del diccionario creamos un nodo
             nodo = Nodo(simbolo=par[0], frecuencia=par[1])
             listNodos.append(nodo)
-
+        
+        self.cantNodos = len(listNodos)
         while len(listNodos) > 1:           # Creamos nodos padres hasta llegar a la raiz y crear asi el arbol de Huffman
             listNodos.sort()                # Ordenamos la lista de nodos por frecuencia
             nodoI = listNodos.pop(0)
@@ -163,7 +166,11 @@ class CompactFileController(QWidget):
             listNodos.append(padre)         # Agregamos el padre a la lista de nodos para seguir creando el arbol
         self.raiz = listNodos[0]
     
-    def generarCodigos(self, nodo, codigo=""):      # Creamos la tabla de codigos de Huffman recorriendo recursivamente el arbol
+    def generarCodigos(self, nodo, codigo=""):                  # Creamos la tabla de codigos de Huffman recorriendo recursivamente el arbol
+        if self.cantNodos == 1:                         # Caso especial donde el archivo original solo tiene 1 unico caracter, por lo que la raiz seria una hoja
+            self.tablaCodigos[nodo.simbolo] = "0"
+            return
+        
         if nodo.simbolo != None:
             self.tablaCodigos[nodo.simbolo] = codigo            # Si el nodo es una hoja, guardamos el codigo en la tabla
         else:
