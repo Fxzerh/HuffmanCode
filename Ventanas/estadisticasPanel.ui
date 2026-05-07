@@ -42,7 +42,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Estaditicas del Archivo</string>
+    <string>Estadísticas del Archivo</string>
    </property>
    <property name="scaledContents">
     <bool>false</bool>
@@ -52,6 +52,45 @@
    </property>
    <property name="wordWrap">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="refresh_btn">
+   <property name="geometry">
+    <rect>
+     <x>1170</x>
+     <y>20</y>
+     <width>90</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Actualizar</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_info">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>100</y>
+     <width>1220</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Seleccione un archivo para ver la comparación de tamaños.</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="statsTable">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>140</y>
+     <width>1220</width>
+     <height>520</height>
+    </rect>
    </property>
   </widget>
  </widget>
