@@ -1,4 +1,4 @@
-﻿from PyQt6.QtWidgets import QWidget, QMessageBox, QTableWidget, QTableWidgetItem
+﻿from PyQt6.QtWidgets import QWidget, QMessageBox, QTableWidget, QTableWidgetItem, QHeaderView
 from PyQt6 import uic
 import os
 import json
@@ -24,6 +24,8 @@ class EstadisticasController(QWidget):
             "Descompactado",
             "Ahorro"
         ])
+        self.header = self.statsTable.horizontalHeader()
+        self.header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
         # ---------------------------- ACCIONES Y EVENTOS -----------------------------------------------------------------------------------------
         self.back_btn.clicked.connect(lambda: self.cambiarPanel(0))
@@ -46,6 +48,7 @@ class EstadisticasController(QWidget):
         else:
             self.label_info.setText("Seleccione un archivo para ver la comparación de tamaños.")
             self.statsTable.resizeColumnsToContents()
+        self.header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
     def cargarTabla(self):
         if not os.path.exists(self.carpetaArchivos):
