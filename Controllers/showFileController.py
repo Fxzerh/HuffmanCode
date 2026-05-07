@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QFileDialog, QMessageBox, QTableWidget, QTableWidgetItem
 from PyQt6 import uic
-import shutil
 import os
 import json
 from Clases.nodo import Nodo

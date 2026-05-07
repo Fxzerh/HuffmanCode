@@ -63,6 +63,16 @@
      <height>521</height>
     </rect>
    </property>
+   <column>
+    <property name="text">
+     <string>Archivo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Tamaño</string>
+    </property>
+   </column>
   </widget>
   <widget class="QTextEdit" name="textFileO">
    <property name="geometry">

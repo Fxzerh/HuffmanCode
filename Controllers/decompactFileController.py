@@ -18,6 +18,7 @@ class DecompactFileController(QWidget):
         self.raiz = None                    # Variable para guardar la raiz del arbol de huffman
         self.dicCaracteres = {}             # Variable para guardar el diccionario de caracteres y sus frecuencias
         self.tablaCodigos = {}              # Variable para guardar los codigos de huffman
+        self.cantNodos = 0
 
         # ---------- SETEOS INICIALES ---------------------------------------------------------------------------------------------------------
         self.textFile.setReadOnly(True)  # Hacer el QTextEdit de solo lectura
@@ -143,6 +144,7 @@ class DecompactFileController(QWidget):
             nodo = Nodo(simbolo=par[0], frecuencia=par[1])
             listNodos.append(nodo)
 
+        self.cantNodos = len(listNodos)
         while len(listNodos) > 1:           # Creamos nodos padres hasta llegar a la raiz y crear asi el arbol de Huffman
             listNodos.sort()                # Ordenamos la lista de nodos por frecuencia
             nodoI = listNodos.pop(0)
@@ -156,13 +158,18 @@ class DecompactFileController(QWidget):
     def descomprimirTexto(self, textoComprimido):
         nodoActual = self.raiz                              # Agarramos la raiz para recorrer el arbol de huffman generado
         textoDescomprimido = ""
-        for c in textoComprimido:                           # Por cada caracter del archivo comprimido recorremos el arbol
-            if c == "0":
-                nodoActual = nodoActual.hijoIzq             # Si el bit es 0 vamos al hijo izquierdo
-            else:
-                nodoActual = nodoActual.hijoDer             # Si el bit es 1 vamos al hijo derecho
-            
-            if nodoActual.simbolo != None:                  # Si el simbolo del nodo es distinto a None, llegamos a una hoja por lo que es un simbolo del texto original
-                textoDescomprimido += nodoActual.simbolo    # Agregamos el simbolo al texto descomprimido
-                nodoActual = self.raiz                      # Volvemos a la raiz para seguir recorriendo el arbol con los siguientes bits del texto comprimido
+        for c in textoComprimido:     
+            if self.cantNodos != 1:                         # Por cada caracter del archivo comprimido recorremos el arbol
+                if c == "0":
+                    nodoActual = nodoActual.hijoIzq             # Si el bit es 0 vamos al hijo izquierdo
+                else:
+                    nodoActual = nodoActual.hijoDer             # Si el bit es 1 vamos al hijo derecho
+                
+                if nodoActual.simbolo != None:                  # Si el simbolo del nodo es distinto a None, llegamos a una hoja por lo que es un simbolo del texto original
+                    textoDescomprimido += nodoActual.simbolo    # Agregamos el simbolo al texto descomprimido
+                    nodoActual = self.raiz                      # Volvemos a la raiz para seguir recorriendo el arbol con los siguientes bits del texto comprimido
+
+            else:                   
+                textoDescomprimido += nodoActual.simbolo        # Caso especial en donde el archivo original solo tiene 1 caracter, por lo que la raiz es una hoja
+
         return textoDescomprimido
