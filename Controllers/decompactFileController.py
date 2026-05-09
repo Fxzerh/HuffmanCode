@@ -83,6 +83,9 @@ class DecompactFileController(QWidget):
         rutaFile = os.path.join(self.carpetaArchivos, nombreArchivo)
         try:
             if os.path.exists(rutaFile):
+                if nombreArchivo.lower().endswith(('.pdf', '.exe', '.png', '.jpg')):
+                    self.textFile.setPlainText("El archivo es binario y no se puede previsualizar como texto.")
+                    return
                 with open(rutaFile, 'r', encoding='utf-8') as f:
                     contenido = f.read()
                     self.textFile.setPlainText(contenido)
@@ -107,7 +110,11 @@ class DecompactFileController(QWidget):
                     tamañoDic = f.read(4)
                     longDic = int.from_bytes(tamañoDic, byteorder='big')        # Obtenemos la longitud del diccionario (en bytes) para luego leerlo
                     dicBytes = f.read(longDic)                                  # Recuperamos el diccionario con las frecuencias de cada caracter
-                    self.dicCaracteres = json.loads(dicBytes.decode())          # Convertimos el diccionario de bytes a un diccionario de python
+                    dicAux = json.loads(dicBytes.decode())          # Convertimos el diccionario de bytes a un diccionario de python
+                    self.dicCaracteres = {}
+                    for caracter, frecuencia in dicAux.items():
+                        llaveInt = int(caracter)
+                        self.dicCaracteres[llaveInt] = frecuencia
                     
                     # Recuperamos el contenido comprimido del archivo
                     contenido = f.read()
@@ -124,11 +131,11 @@ class DecompactFileController(QWidget):
                     textoOriginal = self.descomprimirTexto(strBytes)
 
                     self.textFile.clear()
-                    self.textFile.setPlainText(textoOriginal)
+                    #self.textFile.setPlainText(textoOriginal)
 
                     # Guardamos el archivo descomprimido
                     nombreFile = os.path.splitext(nombreArchivo)[0]  # Obtener el nombre del archivo sin la extensión
-                    with open(os.path.join(self.carpetaArchivos, nombreFile + ".dhu"), "w", encoding='utf-8') as f:
+                    with open(os.path.join(self.carpetaArchivos, nombreFile + ".dhu"), "wb") as f:
                         f.write(textoOriginal)
                     self.refrescarPanel()
 
@@ -157,19 +164,19 @@ class DecompactFileController(QWidget):
     
     def descomprimirTexto(self, textoComprimido):
         nodoActual = self.raiz                              # Agarramos la raiz para recorrer el arbol de huffman generado
-        textoDescomprimido = ""
-        for c in textoComprimido:     
+        textoDescomprimido = bytearray()
+        for bit in textoComprimido:     
             if self.cantNodos != 1:                         # Por cada caracter del archivo comprimido recorremos el arbol
-                if c == "0":
-                    nodoActual = nodoActual.hijoIzq             # Si el bit es 0 vamos al hijo izquierdo
+                if bit == "0":
+                    nodoActual = nodoActual.hijoIzq                 # Si el bit es 0 vamos al hijo izquierdo
                 else:
-                    nodoActual = nodoActual.hijoDer             # Si el bit es 1 vamos al hijo derecho
+                    nodoActual = nodoActual.hijoDer                 # Si el bit es 1 vamos al hijo derecho
                 
-                if nodoActual.simbolo != None:                  # Si el simbolo del nodo es distinto a None, llegamos a una hoja por lo que es un simbolo del texto original
-                    textoDescomprimido += nodoActual.simbolo    # Agregamos el simbolo al texto descomprimido
-                    nodoActual = self.raiz                      # Volvemos a la raiz para seguir recorriendo el arbol con los siguientes bits del texto comprimido
+                if nodoActual.simbolo != None:                      # Si el simbolo del nodo es distinto a None, llegamos a una hoja por lo que es un simbolo del texto original
+                    textoDescomprimido.append(nodoActual.simbolo)   # Agregamos el simbolo al texto descomprimido
+                    nodoActual = self.raiz                          # Volvemos a la raiz para seguir recorriendo el arbol con los siguientes bits del texto comprimido
 
             else:                   
-                textoDescomprimido += nodoActual.simbolo        # Caso especial en donde el archivo original solo tiene 1 caracter, por lo que la raiz es una hoja
+                textoDescomprimido.append(nodoActual.simbolo)       # Caso especial en donde el archivo original solo tiene 1 caracter, por lo que la raiz es una hoja
 
-        return textoDescomprimido
+        return bytes(textoDescomprimido)

@@ -85,12 +85,19 @@ class ShowFileController(QWidget):
         try:
             if os.path.splitext(archivo)[1] != ".dhu":
                 if os.path.exists(rutaFileO):
+                    if archivo.lower().endswith(('.pdf', '.exe', '.png', '.jpg')):
+                        self.textFileO.setPlainText("El archivo es binario y no se puede previsualizar como texto.")
+                        return
                     with open(rutaFileO, 'r', encoding='utf-8') as f:
                         contenido = f.read()
                         self.textFileO.setPlainText(contenido)
                 else:
                     QMessageBox.warning(self, "Error", "El archivo no existe en la ruta especificada.")
                 if os.path.exists(rutaFileC):
+                    if nombreArchivo.lower().endswith(('.pdf', '.exe', '.png', '.jpg')):
+                        self.textFileC.setPlainText("El archivo es binario y no se puede previsualizar como texto.")
+                        return
+                    
                     with open(rutaFileC, 'r', encoding='utf-8') as f:
                         contenido = f.read()
                         self.textFileC.setPlainText(contenido)   

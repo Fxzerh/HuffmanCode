@@ -83,6 +83,9 @@ class CompactFileController(QWidget):
         rutaFile = os.path.join(self.carpetaArchivos, nombreArchivo)
         try:
             if os.path.exists(rutaFile):
+                if nombreArchivo.lower().endswith(('.pdf', '.exe', '.png', '.jpg')):
+                    self.textFile.setPlainText("El archivo es binario y no se puede previsualizar como texto.")
+                    return
                 with open(rutaFile, 'r', encoding='utf-8') as f:
                     contenido = f.read()
                     self.textFile.setPlainText(contenido)
@@ -100,7 +103,7 @@ class CompactFileController(QWidget):
         rutaFile = os.path.join(self.carpetaArchivos, nombreArchivo)
         try:
             if os.path.exists(rutaFile):
-                with open(rutaFile, "r", encoding='utf-8') as f:
+                with open(rutaFile, "rb") as f:
                     contenido = f.read()
                 # CREAMOS EL ARBOL DE HUFFMAN
                 self.arbolHuffman(contenido)
@@ -110,10 +113,15 @@ class CompactFileController(QWidget):
 
                 # COMPRIMIMOS EL CONTENIDO DEL ARCHIVO
                 bitsComprimidos = ""
-                cantPadding = 0
-                for caracter in contenido:                      # Creamos un string con la traduccion del texto al codigo de huffman
-                    codigo = self.tablaCodigos[caracter]
+                for byte_val in contenido: # byte_val será un entero de 0 a 255
+                    codigo = self.tablaCodigos[byte_val]
                     bitsComprimidos += codigo
+
+                #for caracter in contenido:                      # Creamos un string con la traduccion del texto al codigo de huffman
+                #    codigo = self.tablaCodigos[caracter]
+                #    bitsComprimidos += codigo
+
+                cantPadding = 0
                 while len(bitsComprimidos) % 8 != 0:            # Agregamos bits de padding (0s) para que el string sea multiplo de 8
                     bitsComprimidos += "0"
                     cantPadding += 1
@@ -125,7 +133,14 @@ class CompactFileController(QWidget):
                     bytesComprimidos += byteDecimal.to_bytes(1, byteorder='big')    # Pasamos los decimales a byte y los concatenamos
                 
                 # GUARDAMOS EL ARCHIVO COMPRIMIDO
-                dicBytes = json.dumps(self.dicCaracteres).encode()
+                dicParaJson = {}
+                # Recorremos el diccionario original uno por uno
+                for k, v in self.dicCaracteres.items():
+                    # Convertimos la llave 'k' a string y le asignamos el valor 'v'
+                    llave_string = str(k)
+                    dicParaJson[llave_string] = v
+                
+                dicBytes = json.dumps(dicParaJson).encode()
                 nombreFile = os.path.splitext(nombreArchivo)[0]  # Obtener el nombre del archivo sin la extensión
                 #  Formato del archivo comprimido: [Header][Contenido Comprimido]
                 with open(os.path.join(self.carpetaArchivos, nombreFile + ".huf"), "wb") as f:
@@ -146,10 +161,11 @@ class CompactFileController(QWidget):
             QMessageBox.critical(self, "Error", f"No se pudo comprimir el archivo: {str(e)}")
 
     def arbolHuffman(self, texto):
-        listCaracteres = list(texto)        # Dividimos el texto en caracteres
+        self.dicCaracteres = {}
         listNodos = []
-        for caracter in listCaracteres:     # Creamos el diccionario con la frecuencia de cada caracter
-            self.dicCaracteres[caracter] = self.dicCaracteres.get(caracter, 0) + 1
+
+        for byte in texto:     # Creamos el diccionario con la frecuencia de cada caracter
+            self.dicCaracteres[byte] = self.dicCaracteres.get(byte, 0) + 1
 
         for par in self.dicCaracteres.items():      # Por cada par (caracter, frecuencia) del diccionario creamos un nodo
             nodo = Nodo(simbolo=par[0], frecuencia=par[1])

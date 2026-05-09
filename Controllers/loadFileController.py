@@ -44,12 +44,14 @@ class LoadFileController(QWidget):
                 shutil.copy2(ruta_origen, ruta_final)
 
                 # Feedback al usuario
-                QMessageBox.information(self, "Éxito", f"Archivo '{nombre_archivo}' guardado correctamente.")
                 print(f"Archivo guardado en: {ruta_final}")
+                if os.path.split(ruta_final)[1] == ".txt":
+                    with open(ruta_final, "r", encoding="utf-8") as file:
+                        self.showFile.setPlainText(file.read())
+                else:
+                    self.showFile.setPlainText("No se puede mostrar archivos que no sean '.txt' por el momento")
 
-                with open(ruta_final, "r", encoding="utf-8") as file:
-                    self.showFile.setPlainText(file.read())
-
+                QMessageBox.information(self, "Éxito", f"Archivo '{nombre_archivo}' guardado correctamente.")
 
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"No se pudo guardar el archivo: {str(e)}")

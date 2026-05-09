@@ -55,7 +55,7 @@ class EstadisticasController(QWidget):
             return
 
         for nombreArchivo in sorted(os.listdir(self.carpetaArchivos)):
-            if not nombreArchivo.lower().endswith(".txt"):
+            if nombreArchivo.lower().endswith(('.huf', '.dhu')):
                 continue
 
             rutaTxt = os.path.join(self.carpetaArchivos, nombreArchivo)
